@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corporate Gifts - J.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", Arial, sans-serif; }
+        body { background: #fff; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        .promo-bar { background: #eaddc5; text-align: center; padding: 8px; font-size: 11px; color: #333; }
+        
+        .gifting-header { 
+            background: #111; 
+            padding: 20px 45px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            color: white; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+        }
+        
+        .logo { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; }
+        .nav-links { font-size: 11px; text-transform: uppercase; color: #c4a47c; cursor: pointer; }
+
+        /* SLIDER STYLES */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 550px;
+            overflow: hidden;
+        }
+
+        .slides {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .slide-1 { 
+            background-image: url('https://gifts.junaidjamshed.com/media/weltpixel/owlcarouselslider/images/e/i/eid-ul-adha-corporate-gifts-web_1.jpg');
+            justify-content: flex-end;
+            padding-right: 10%;
+        }
+
+        .slide-2 { 
+            background-image: url('https://gifts.junaidjamshed.com/media/weltpixel/owlcarouselslider/images/t/h/thoughtfully-curated-gift-sets-web.jpg');
+            justify-content: flex-start;
+            padding-left: 10%;
+        }
+
+        .hero-text h1 { font-family: 'Playfair Display', serif; font-size: 60px; font-style: italic; color: #111; line-height: 1; }
+        .hero-text p { font-size: 24px; letter-spacing: 4px; text-transform: uppercase; color: #111; }
+
+        .arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 30px; color: #111; cursor: pointer; padding: 20px; user-select: none; z-index: 10; }
+        .prev { left: 10px; }
+        .next { right: 10px; }
+
+        .slider-nav { position: absolute; bottom: 20px; width: 100%; display: flex; justify-content: center; gap: 10px; }
+        .dot { width: 8px; height: 8px; border: 1px solid #111; border-radius: 50%; cursor: pointer; }
+        .dot.active { background: #111; }
+
+        /* CONTENT SECTIONS */
+        .section-title { font-family: 'Playfair Display', serif; font-size: 28px; padding: 60px 45px 30px; text-align: left; }
+        
+        .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 0 45px 60px; }
+        .product-card img { width: 100%; display: block; border: 1px solid #eee; transition: 0.3s; }
+        .product-card:hover img { opacity: 0.8; }
+        .product-label { text-align: center; margin-top: 15px; font-size: 14px; font-weight: 600; }
+        .product-desc { text-align: center; font-size: 11px; color: #666; margin-top: 5px; padding: 0 10px; }
+        .explore-btn { display: block; text-align: center; font-size: 11px; font-weight: 700; text-decoration: underline; margin-top: 10px; text-transform: uppercase; }
+
+        .testimonials { background: #fff; padding: 80px 45px; display: flex; gap: 30px; justify-content: center; }
+        .test-card { background: #fff; padding: 30px; border: 1px solid #f0f0f0; box-shadow: 0 10px 30px rgba(0,0,0,0.03); width: 350px; text-align: left; }
+        .stars { color: #f2b01e; font-size: 14px; margin-bottom: 15px; }
+        .test-text { font-size: 13px; line-height: 1.6; color: #444; margin-bottom: 20px; }
+        .test-author { font-weight: 700; font-size: 14px; }
+        .test-role { font-size: 12px; color: #888; }
+
+        .client-logos { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 40px; padding: 40px; filter: grayscale(1); opacity: 0.7; }
+        .client-logos img { height: 35px; }
+
+        .contact-section { padding: 80px 45px; text-align: center; max-width: 900px; margin: 0 auto; }
+        .contact-section h2 { font-size: 32px; letter-spacing: 2px; margin-bottom: 40px; color: #0b1a3d; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .full-width { grid-column: span 2; }
+        input, textarea { width: 100%; padding: 12px 15px; border: 1px solid #ccc; border-radius: 15px; font-size: 14px; outline: none; }
+        .submit-btn { background: #0b1a3d; color: white; padding: 12px 60px; border: none; border-radius: 20px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 30px; }
+
+        .art-banner { 
+            height: 500px; 
+            background: #008080 url('https://gifts.junaidjamshed.com/media/wysiwyg/corporate-banner-new.jpg') center/cover; 
+            display: flex; align-items: center; color: white; padding-left: 55%; 
+        }
+        .art-text h2 { font-family: 'Playfair Display', serif; font-size: 50px; font-style: italic; }
+        .art-text p { font-size: 12px; letter-spacing: 1px; max-width: 400px; line-height: 1.8; margin-top: 20px; }
+
+        footer { background: #000; color: white; padding: 80px 45px 20px; }
+        .footer-grid { display: grid; grid-template-columns: 1.5fr 1.5fr 2fr; gap: 50px; border-bottom: 1px solid #333; padding-bottom: 50px; }
+        .footer-col h4 { font-size: 14px; margin-bottom: 25px; text-transform: uppercase; }
+        .footer-col li { font-size: 13px; color: #999; margin-bottom: 12px; cursor: pointer; }
+        .footer-col p { font-size: 13px; color: #999; line-height: 1.6; margin-bottom: 10px; }
+        .copyright { text-align: center; padding: 30px; font-size: 11px; color: #666; }
+    </style>
+</head>
+<body>
+
+    <div class="promo-bar">Customized orders may take up to 3 weeks of delivery</div>
+
+    <header class="gifting-header">
+        <a href="index.html" class="logo">J.</a>
+        <div class="nav-links">Trending ▾</div>
+        <div style="width: 30px;"></div>
+    </header>
+
+    <div class="slider-container">
+        <div class="slides" id="slide-track">
+            <div class="slide slide-1">
+                <div class="hero-text">
+                    <img src="images/3 (1).webp" alt="">
+                    <h1 style="position:absolute;top:0%">Eid ul Adha</h1>
+                    <p>Corporate Gifts</p>
+                </div>
+            </div>
+            <div class="slide slide-2">
+                <div class="hero-text">
+                    <img src="images/b.webp" alt="">
+                    <h1 style="position: absolute; top: 0%;">Thoughtfully Curated</h1>
+                    <p>Gift Sets</p>
+                </div>
+            </div>
+            <div class="slide slide-1">
+                <div class="hero-text">
+                    <img src="images/a.jpg" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="arrow prev" onclick="moveSlide(-1)">&#10094;</div>
+        <div class="arrow next" onclick="moveSlide(1)">&#10095;</div>
+        <div class="slider-nav">
+            <div class="dot active" onclick="currentSlide(0)"></div>
+            <div class="dot" onclick="currentSlide(1)"></div>
+            <div class="dot" onclick="currentSlide(2)"></div>
+            
+        </div>
+    </div>
+
+    <h2 class="section-title">New In</h2>
+    <div class="product-grid">
+        <div class="product-card">
+            <img src="images/Junaid_Jamshed_J._Janan_Gift_Set.webp">
+            <div class="product-label">Gift Set A</div>
+        </div>
+        <div class="product-card">
+            <img src="images/JananGiftBox_2_1024x1024.webp">
+            <div class="product-label">Gift Set B</div>
+        </div>
+        <div class="product-card">
+            <img src="images/4.webp">
+            <div class="product-label">Gift Set C</div>
+        </div>
+        <div class="product-card">
+            <img src="images/5.webp">
+            <div class="product-label">Gift Set D</div>
+        </div>
+    </div>
+
+    <h2 class="section-title">Corporate Gifts</h2>
+    <div class="product-grid">
+        <div class="product-card">
+            <img src="images/6.webp">
+            <div class="product-label">Business Gifts</div>
+            <a href="#" class="explore-btn">Explore More</a>
+        </div>
+        <div class="product-card">
+            <img src="images/7.jfif">
+            <div class="product-label">Festive Gifts</div>
+            <a href="#" class="explore-btn">Explore More</a>
+        </div>
+        <div class="product-card">
+            <img src="images/66.webp">
+            <div class="product-label">Custom Gifts</div>
+            <a href="#" class="explore-btn">Explore More</a>
+        </div>
+        <div class="product-card">
+            <img src="images/9.jfif">
+            <div class="product-label">Gift Cards & Vouchers</div>
+            <a href="#" class="explore-btn">Explore More</a>
+        </div>
+    </div>
+
+    <section class="testimonials">
+        <div class="test-card">
+            <div class="stars">★★★★★</div>
+            <p class="test-text">We have had a great experience working with J. Junaid Jamshed for our corporate gifting and apparel needs.</p>
+            <p class="test-author">Syed M Waqas</p>
+            <p class="test-role">Assistant Manager Supply Chain</p>
+        </div>
+        <div class="test-card">
+            <div class="stars">★★★★★</div>
+            <p class="test-text">They are very cooperative, trustworthy, and always fulfill their commitments.</p>
+            <p class="test-author">Shahzaman</p>
+            <p class="test-role">Senior Project Manager</p>
+        </div>
+        <div class="test-card">
+            <div class="stars">★★★★★</div>
+            <p class="test-text">I am highly satisfied with quality and services provided by J. corporate and their attention to details</p>
+            <p class="test-author">Farhat Zehra</p>
+            <p class="test-role">Product Manager</p>
+        </div>
+    </section>
+
+    <div class="client-logos">
+        <img src="">
+        <img src="">
+        <img src="">
+    </div>
+
+    <section class="contact-section">
+        <h2>GET IN TOUCH</h2>
+        <div class="form-grid">
+            <input type="text" placeholder="Name*">
+            <input type="text" placeholder="City">
+            <input type="text" placeholder="Organization Name">
+            <input type="text" placeholder="Phone*">
+            <input type="email" placeholder="Email*" class="full-width">
+            <textarea placeholder="Remarks / Notes" rows="5" class="full-width"></textarea>
+        </div>
+        <button class="submit-btn">Submit</button>
+    </section>
+
+    <section class="art-banner">
+        <div class="art-text">
+            <img style="width: 300px; margin-top: -40px; position: relative; z-index: 5;" src="images/image_2026-05-08_172331567.png" alt="">
+            <h2>The Art of Appreciation</h2>
+            <p>HONOUR EXCELLENCE WITH J.'s EXCLUSIVE CORPORATE GIFT SETS.</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>About Us</h4>
+                <ul><li>Our Story</li><li>Careers</li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Customer Service</h4>
+                <ul><li>Contact Us</li><li>Terms & Conditions</li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <p><strong>Email:</strong> corporate@junaidjamshed.com</p>
+                <p><strong>Address:</strong> J.junaidjamshed pvt ltd ,head office,40 sector19,Koronagi industrialarea</p>
+            </div>
+        </div>
+        <p class="copyright">© 2025 J. Junaid Jamshed Pvt Ltd. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let index = 0;
+        const track = document.getElementById('slide-track');
+        
+        const dots = document.querySelectorAll('.dot');
+        const totalSlides = dots.length; 
+
+        function updateSlider() {
+            track.style.transform = `translateX(-${index * 100}%)`;
+            dots.forEach(d => d.classList.remove('active'));
+            dots[index].classList.add('active');
+        }
+
+        function moveSlide(n) {
+            index += n;
+            if (index >= totalSlides) index = 0;
+            if (index < 0) index = totalSlides - 1;
+            updateSlider();
+        }
+
+        function currentSlide(n) {
+            index = n;
+            updateSlider();
+        }
+        
+    </script>
+</body>
+</html>

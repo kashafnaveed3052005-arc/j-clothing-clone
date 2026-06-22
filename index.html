@@ -877,13 +877,13 @@ window.addEventListener('load', updateBagCounter);
     // 1. Yeh upar wala rehne dein (jo sahi initialize kar raha hai)
     const SUPABASE_URL = 'https://ncjmfseeotemvmjorlav.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    
 
-    // 2. Niche jo testing code hai, us mein se "const supabase = ..." wali line ko hatae'in
+    
     async function testDatabase() {
         console.log("Trying to connect with supabase...");
         
-        // Yahan direct 'supabase' use hoga, dobara declare nahi karna
+
         const { data, error } = await supabase.from('products').select('*').limit(1);
         
         if (error) {

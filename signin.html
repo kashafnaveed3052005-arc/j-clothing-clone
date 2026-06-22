@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in - J.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+
+        body {
+            background-color: #f6f6f6; /* Light grey background from your image */
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .signin-card {
+            background: white;
+            padding: 40px;
+            width: 100%;
+            max-width: 440px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 50px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        h2 { font-size: 24px; font-weight: 600; margin-bottom: 8px; text-align: left; }
+        p { color: #666; font-size: 14px; margin-bottom: 24px; text-align: left; }
+
+        .shop-btn {
+            background: #5a31f4;
+            color: white;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 24px;
+            transition: background 0.2s;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            margin-bottom: 24px;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .divider span { padding: 0 10px; }
+
+        .input-group { text-align: left; margin-bottom: 16px; }
+        label { display: block; font-size: 13px; margin-bottom: 5px; color: #333; }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dcdcdc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+        input:focus { outline: 2px solid #000; border-color: transparent; }
+
+        .continue-btn {
+            background: #000;
+            color: white;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .footer-links {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+        .footer-links a { color: #666; text-decoration: underline; }
+
+        .privacy-link {
+            position: absolute;
+            bottom: 30px;
+            font-size: 13px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="signin-card">
+        <span class="logo">J.</span>
+        <h2>Sign in</h2>
+        <p>Sign in or create an account</p>
+
+        <button class="shop-btn">Continue with shop</button>
+
+        <div class="divider"><span>or</span></div>
+
+        <div class="input-group">
+            <input type="email" placeholder="Email" required>
+        </div>
+
+        <button class="continue-btn">Continue</button>
+
+        <div class="footer-links">
+            By continuing, you agree to our <a href="#">Terms of service</a>
+        </div>
+    </div>
+
+    <div class="privacy-link">
+        <a href="#">Privacy policy</a>
+    </div>
+
+</body>
+</html>

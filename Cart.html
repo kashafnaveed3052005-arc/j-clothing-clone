@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart - J. Clone</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", Arial, sans-serif; }
+    a { text-decoration: none; color: inherit; cursor: pointer; }
+
+    header { position: sticky; top: 0; z-index: 1000; background: #fff; width: 100%; overflow: visible; }
+    .top-bar { background: #e8e4e1; display: flex; justify-content: space-between; align-items: center; padding: 8px 45px; font-size: 10px; font-weight: 600; }
+    .main-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 45px; position: relative; height: 80px; }
+    .logo { font-family: 'Playfair Display', serif; font-size: 45px; font-weight: 900; position: absolute; left: 50%; transform: translateX(-50%); letter-spacing: -3px; }
+    .gender-nav { display: flex; gap: 25px; }
+    .nav-item-container { position: relative; padding-bottom: 25px; margin-bottom: -25px; }
+    .nav-link { font-size: 13px; font-weight: 700; padding: 15px 0; display: inline-block; border-bottom: 2px solid transparent; }
+    .nav-item-container:hover .nav-link { border-bottom: 2px solid #000; }
+    .user-actions { display: flex; gap: 15px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+    .nav-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 12px 45px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+    .region img { width: 18px; border: 1px solid #ddd; }
+    .cat-links { display: flex; gap: 20px; color: #333; align-items: center; }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; color: #333; background: #fff; }
+        
+        /* Navbar (Same as Product Detail) */
+        .top-nav { display: flex; justify-content: space-between; padding: 15px 40px; border-bottom: 1px solid #ddd; align-items: center; background: #fff; }
+        .logo { font-size: 30px; font-weight: bold; text-decoration: none; color: #000; }
+        .nav-links a { text-decoration: none; color: #000; margin-left: 20px; font-size: 12px; text-transform: uppercase; }
+
+        .cart-wrapper { display: flex; max-width: 1200px; margin: 40px auto; gap: 30px; padding: 0 20px; }
+        
+        /* Left Side: Items */
+        .cart-left { flex: 2; }
+        .cart-header { font-size: 24px; font-weight: bold; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px; text-transform: uppercase; }
+        
+        .cart-item { display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid #eee; position: relative; }
+        .cart-item img { width: 120px; height: auto; }
+        .item-info { flex: 1; }
+        .item-name { font-weight: bold; font-size: 14px; text-transform: uppercase; margin-bottom: 5px; }
+        .item-details { font-size: 12px; color: #666; line-height: 1.6; }
+        .item-price { position: absolute; right: 0; top: 20px; font-weight: bold; }
+
+       
+        .qty-box { display: flex; border: 1px solid #000; width: fit-content; margin-top: 15px; }
+        .qty-box button { background: none; border: none; padding: 5px 12px; cursor: pointer; }
+        .qty-box input { width: 30px; text-align: center; border: none; outline: none; }
+        .remove-btn { color: #888; font-size: 11px; text-decoration: underline; background: none; border: none; cursor: pointer; margin-top: 10px; padding: 0; }
+
+      
+        .cart-right { flex: 1; }
+        .gifting-box { background: #f1f1f1; padding: 20px; margin-bottom: 20px; }
+        .gifting-box h3 { font-size: 14px; margin-top: 0; }
+        .gifting-box textarea { width: 100%; height: 80px; border: 1px solid #ccc; padding: 10px; box-sizing: border-box; margin-top: 10px; }
+        
+        .subtotal-box { border: 1px solid #eee; padding: 20px; }
+        .subtotal-row { display: flex; justify-content: space-between; font-weight: bold; font-size: 18px; margin-bottom: 10px; }
+        .subtotal-box p { font-size: 12px; color: #666; margin-bottom: 20px; }
+        .checkout-btn { background: #000; color: #fff; width: 100%; padding: 15px; border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+
+        footer { padding: 60px 45px 20px; background: #fff; border-top: 1px solid #eee; margin-top: 50px;}
+    .footer-container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; margin-bottom: 60px; }
+    .footer-col h3 { font-size: 14px; font-weight: 700; margin-bottom: 25px; text-transform: uppercase; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { font-size: 12px; color: #000; margin-bottom: 12px; font-weight: 500; }
+    .newsletter-col { width: 350px; }
+    .newsletter-input { display: flex; border: 1px solid #ddd; margin-bottom: 15px; }
+    .newsletter-input input { border: none; padding: 12px; width: 100%; outline: none; font-size: 12px; }
+    .newsletter-input button { background: #333; color: white; border: none; padding: 0 20px; cursor: pointer; }
+    .footer-bottom { border-top: 1px solid #eee; padding-top: 20px; display: flex; justify-content: center; align-items: center; }
+    .footer-bottom-text { font-size: 11px; color: #000; }
+    </style>
+</head>
+<body>
+<div class="top-bar">
+        <div><a href="signin.html">SIGN IN</a> | <a href="tracking.html">TRACKING INFO</a> | <a href="gifting.html">GIFTING</a></div>
+        <div class="top-bar-center">Step Into the Season with Our Latest Arrivals - <a href="#" style="color: #c40000;">Shop Now</a></div>
+        <div style="width:150px"></div>
+    </div>
+
+    <div class="main-header">
+        <div class="gender-nav">
+            <div class="nav-item-container"><a class="nav-link">WOMEN</a></div>  
+            <div class="nav-item-container"><a class="nav-link">MEN</a></div>
+            <div class="nav-item-container"><a class="nav-link">FRAGRANCE & BEAUTY</a></div>
+            <div class="nav-item-container"><a class="nav-link">TEENS</a></div>
+        </div>
+        <div class="logo">J.</div>
+        <div class="user-actions">
+            <a href="javascript:void(0)">SEARCH</a> 
+            <a href="javascript:void(0)">WISHLIST</a> 
+            <a href="cart.html">BAG (<span id="cart-count">0</span>)</a>
+        </div>
+    </div>
+
+    <div class="nav-bottom">
+        <div class="region"><span>PAK</span></div>
+        <div class="cat-links">
+            <a class="nav-link" style="font-size:11px; padding:0;">NEW IN</a>
+            <a class="nav-link" style="font-size:11px; padding:0;">READY TO WEAR</a>
+            <a class="nav-link" style="font-size:11px; padding:0;">UNSTITCHED</a>
+            <a class="nav-link" style="font-size:11px; padding:0;">FORMALS</a>
+            <a class="nav-link" style="font-size:11px; padding:0;">FOOTWEAR</a>
+        </div>
+        <div class="currency">PKR</div>
+    </div>
+    <nav class="top-nav">
+        <a href="index.html" class="logo">J.</a>
+        <div class="nav-links">
+            <a href="#">SEARCH</a>
+            <a href="#">WISHLIST</a>
+            <a href="cart.html">BAG (<span id="cart-count">0</span>)</a>
+        </div>
+    </nav>
+
+    <div class="cart-wrapper">
+        <div class="cart-left">
+            <div class="cart-header">Your Cart (<span id="items-count">0</span>)</div>
+            <div id="cart-items-list">
+                <!-- Items will load here via JS -->
+            </div>
+        </div>
+
+        <div class="cart-right">
+            <div class="gifting-box">
+                <h3>GIFTING THIS ORDER?</h3>
+                <p style="font-size: 11px;">ADD GIFT NOTE</p>
+                <textarea placeholder="WRITE YOUR NOTE HERE"></textarea>
+            </div>
+
+            <div class="subtotal-box">
+                <div class="subtotal-row">
+                    <span>SUBTOTAL</span>
+                    <span id="total-price">PKR.0</span>
+                </div>
+                <p>Taxes included and shipping calculated at checkout</p>
+               <button class="checkout-btn" onclick="window.location.href='checkout.html'">Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function renderCartPage() {
+            let cart = JSON.parse(localStorage.getItem('j_cart')) || [];
+            let container = document.getElementById('cart-items-list');
+            let total = 0;
+            
+            document.getElementById('cart-count').innerText = cart.length;
+            document.getElementById('items-count').innerText = cart.length;
+
+            if (cart.length === 0) {
+                container.innerHTML = "<h3>Your cart is empty</h3>";
+                document.getElementById('total-price').innerText = "PKR.0";
+                return;
+            }
+
+            container.innerHTML = cart.map((item, index) => {
+                let priceValue = parseInt(item.price.replace(/,/g, ''));
+                let itemTotal = priceValue * (item.quantity || 1);
+                total += itemTotal;
+
+                return `
+                    <div class="cart-item">
+                        <img src="${item.image}">
+                        <div class="item-info">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-details">
+                                SIZE: M <br>
+                                PRODUCT ID: JST262303S
+                            </div>
+                            <div class="qty-box">
+                                <button onclick="updateQty(${index}, -1)">-</button>
+                                <input type="text" value="${item.quantity || 1}" readonly>
+                                <button onclick="updateQty(${index}, 1)">+</button>
+                            </div>
+                            <button class="remove-btn" onclick="removeItem(${index})">REMOVE</button>
+                        </div>
+                        <div class="item-price">PKR.${itemTotal.toLocaleString()}</div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('total-price').innerText = "PKR." + total.toLocaleString();
+        }
+
+        function updateQty(index, change) {
+            let cart = JSON.parse(localStorage.getItem('j_cart')) || [];
+            if (!cart[index].quantity) cart[index].quantity = 1;
+            
+            let newQty = cart[index].quantity + change;
+            if (newQty >= 1) {
+                cart[index].quantity = newQty;
+                localStorage.setItem('j_cart', JSON.stringify(cart));
+                renderCartPage();
+            }
+        }
+
+        function removeItem(index) {
+            let cart = JSON.parse(localStorage.getItem('j_cart')) || [];
+            cart.splice(index, 1);
+            localStorage.setItem('j_cart', JSON.stringify(cart));
+            renderCartPage();
+        }
+
+        window.onload = renderCartPage;
+    </script>
+   
+
+
+<!-- FOOTER HTML START -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-col">
+            <h3>CONTACT</h3>
+            <p>📞 +92 2137 170 445</p>
+            <p>✉️ eshop@junaidjamshed.com</p>
+        </div>
+        <div class="footer-col">
+            <h3>COMPANY</h3>
+            <ul>
+                <li>ABOUT US</li>
+                <li>CAREERS</li>
+                <li>STORE LOCATOR</li>
+            </ul>
+        </div>
+        <div class="newsletter-col">
+            <h3>NEWSLETTER</h3>
+            <div class="newsletter-input">
+                <input type="text" placeholder="EMAIL ADDRESS">
+                <button>→</button>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="footer-bottom-text">© 2026 J. All Rights Reserved</div>
+    </div>
+</footer>
+</body>
+</html>

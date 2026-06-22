@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J. Official Website Clone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", Arial, sans-serif; }
+        a { text-decoration: none; color: inherit; cursor: pointer; }
+
+        header { 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            background: #fff; 
+            width: 100%;
+            overflow: visible; 
+        }
+
+        .top-bar {
+            background: #e8e4e1; display: flex; justify-content: space-between;
+            align-items: center; padding: 8px 45px; font-size: 10px; font-weight: 600;
+        }
+        .top-bar-center a { color: #c40000; margin-left: 5px; }
+
+        .main-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 45px; position: relative; height: 80px;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif; font-size: 45px; font-weight: 900;
+            position: absolute; left: 50%; transform: translateX(-50%); letter-spacing: -3px;
+        }
+
+        .gender-nav { display: flex; gap: 25px; }
+        
+        .nav-item-container { 
+            position: relative; 
+            padding-bottom: 25px; 
+            margin-bottom: -25px; 
+        }
+
+        .nav-link { font-size: 13px; font-weight: 700; padding: 15px 0; display: inline-block; border-bottom: 2px solid transparent; }
+        .nav-item-container:hover .nav-link { border-bottom: 2px solid #000; }
+
+        .mega-menu {
+            position: absolute; 
+            top: 100%; 
+            left: 0; 
+            width: 100vw; 
+            margin-left: calc(-50vw + 50%); 
+            background: white;
+            display: none; 
+            padding: 40px 100px; 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            border-top: 1px solid #eee; 
+            justify-content: center; 
+            gap: 60px;
+            z-index: 1100;
+        }
+        .nav-item-container:hover .mega-menu { display: flex; }
+
+        .menu-text-row { display: flex; gap: 40px; }
+        .menu-col { min-width: 160px; }
+        .menu-col h3 { font-size: 11px; font-weight: 800; margin-bottom: 15px; color: #000; letter-spacing: 0.5px; text-transform: uppercase; }
+        .menu-col ul { list-style: none; }
+        .menu-col li { font-size: 11px; margin-bottom: 10px; color: #555; }
+        .menu-col li:hover { color: #000; text-decoration: underline; }
+
+        .menu-images { display: flex; gap: 20px; }
+        .featured-card { text-align: center; }
+        .featured-card img { width: 140px; height: 190px; object-fit: cover; margin-bottom: 8px; border: 1px solid #eee; }
+        .featured-card p { font-size: 10px; font-weight: 700; text-transform: uppercase; }
+
+        .user-actions { display: flex; gap: 15px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+
+        .nav-bottom {
+            display: flex; justify-content: space-between; align-items: center;
+            border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 12px 45px;
+            font-size: 11px; font-weight: 600; text-transform: uppercase;
+        }
+        .region { display: flex; align-items: center; gap: 6px; }
+        .region img { width: 18px; border: 1px solid #ddd; }
+        .cat-links { display: flex; gap: 20px; color: #333; align-items: center; }
+
+        .hero {
+            background: #0b1a3d url('https://www.junaidjamshed.com/media/weltpixel/owlcarouselslider/images/g/f/gfs_inner_web_1_1.jpg');
+            background-size: cover; background-position: center; height: 600px;
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; color: white; text-align: center;
+            position: relative;
+            z-index: 1; 
+        }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: 80px; line-height: 0.9; letter-spacing: 2px; }
+        .hero .sale-tag { font-size: 160px; font-weight: 900; line-height: 0.8; margin: 15px 0; }
+        .hero .date { background: #c40000; padding: 12px 40px; border-radius: 50px; font-weight: bold; font-size: 24px; }
+        
+        .category-banner { padding: 40px 45px; background: #fff; text-align: center; }
+        .category-banner img { width: 100%; height: auto; display: block; }
+
+        .trending-section { padding: 40px 45px; }
+        .trending-header { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
+        .trending-header h2 { font-size: 14px; font-weight: 800; text-transform: uppercase; }
+        .see-all { font-size: 11px; font-weight: 700; text-decoration: underline; }
+
+        .search-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4); z-index: 2000; display: none; opacity: 0; transition: opacity 0.5s ease;
+        }
+
+        .search-drawer, .cart-drawer {
+            position: fixed; top: 0; right: -450px; width: 400px; height: 100%;
+            background: white; z-index: 2001; padding: 40px 30px;
+            transition: right 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+        }
+
+        .search-active .search-overlay, .cart-active .search-overlay { display: block; opacity: 1; }
+        .search-active .search-drawer, .cart-active .cart-drawer { right: 0; }
+
+        .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; }
+        .drawer-header h3 { font-size: 13px; letter-spacing: 2px; text-transform: uppercase; }
+        .close-drawer { background: none; border: none; font-size: 32px; cursor: pointer; }
+        .search-input-group { border-bottom: 1px solid #000; padding-bottom: 10px; margin-bottom: 30px; display: flex; }
+        .search-input-group input { width: 100%; border: none; outline: none; font-size: 15px; }
+
+        #wishlist-section { display: none; padding: 100px 20px; text-align: center; background: #fff; min-height: 80vh; }
+        .btn-black { background: #000; color: #fff; padding: 15px 45px; font-weight: bold; text-transform: uppercase; font-size: 12px; display: inline-block; }
+
+        footer { padding: 60px 45px 20px; background: #fff; border-top: 1px solid #eee; }
+        .footer-container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; margin-bottom: 60px; }
+        .footer-col h3 { font-size: 14px; font-weight: 700; margin-bottom: 25px; text-transform: uppercase; }
+        .footer-col ul { list-style: none; }
+        .footer-col li { font-size: 12px; color: #000; margin-bottom: 12px; font-weight: 500; }
+        
+        .newsletter-col { width: 350px; }
+        .newsletter-input { display: flex; border: 1px solid #ddd; margin-bottom: 15px; }
+        .newsletter-input input { border: none; padding: 12px; width: 100%; outline: none; font-size: 12px; }
+        .newsletter-input button { background: #333; color: white; border: none; padding: 0 20px; cursor: pointer; }
+
+        .footer-bottom { border-top: 1px solid #eee; padding-top: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .footer-bottom-text { font-size: 11px; color: #000; }
+
+        .trending-tabs { display: flex; gap: 30px; margin-left: auto; margin-right: auto; }
+        .tab-link { font-size: 11px; font-weight: 700; color: #555; padding-bottom: 5px; border-bottom: 2px solid transparent; }
+        .tab-link.active { color: #000; border-bottom: 2px solid #000; }
+        .product-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; margin-top: 20px; }
+        .product-card { position: relative; cursor: pointer; }
+        .badge { position: absolute; top: 10px; left: 0; background: #c40000; color: white; padding: 4px 8px; font-size: 10px; font-weight: bold; z-index: 2; }
+        .product-card img { width: 100%; aspect-ratio: 720 / 925; object-fit: cover; display: block; background: #f7f7f7; }
+        .product-info { padding: 12px 0; }
+        .product-name { font-size: 10px; font-weight: 600; text-transform: uppercase; margin-bottom: 5px; line-height: 1.4; color: #333; }
+        .price-row { display: flex; gap: 8px; font-size: 11px; font-weight: 700; }
+        .new-price { color: #c40000; }
+        .old-price { color: #888; text-decoration: line-through; }
+
+        .hover-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden; 
+            background: #f7f7f7;
+        }
+
+        .hover-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .product-card:hover .hover-container img,
+        .category-item:hover .hover-container img {
+            transform: scale(1.15); 
+        }
+
+        /* MEN SECTION STYLES */
+        #men-section { display: none; padding: 40px 45px; min-height: 80vh; }
+        .men-category-title { font-size: 18px; font-weight: 700; margin-bottom: 25px; text-transform: uppercase; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+    </style>
+</head>
+<body id="bodyTag">
+
+<header>
+    <div class="top-bar">
+        <div><a href="signin.html">SIGN IN</a> | <a href="tracking.html">TRACKING INFO</a> | <a href="gifting.html">GIFTING</a></div>
+        <div class="top-bar-center">Step Into the Season with Our Latest Arrivals - <a href="#">Shop Now</a></div>
+        <div style="width:150px"></div>
+    </div>
+
+    <div class="main-header">
+        <div class="gender-nav">
+          <div class="nav-item-container"><a class="nav-link" href="javascript:void(0)" onclick="showWomen()">WOMEN</a></div>  
+          <div class="nav-item-container"><a class="nav-link" href="javascript:void(0)" onclick="showMen()">MEN</a></div>
+          <div class="nav-item-container"><a class="nav-link">FRAGRANCE & BEAUTY</a></div>
+          <div class="nav-item-container"><a class="nav-link">TEENS</a></div>
+        </div>
+        <div class="logo"><img src="images/logo_black_-_wania_saleem.png" alt=""></div>
+        <div class="user-actions">
+            <a href="javascript:void(0)" onclick="toggleSearch()">SEARCH</a> 
+            <a href="javascript:void(0)" onclick="showWishlist()">WISHLIST</a> 
+       
+            <a href="javascript:void(0)" onclick="toggleCart()">BAG (<span id="cart-count">0</span>)</a>
+            
+        </div>
+    </div>
+
+    <div class="nav-bottom">
+        <div class="region"><img src="https://upload.wikimedia.org/wikipedia/commons/3/32/Flag_of_Pakistan.svg"> <span>PAK</span></div>
+        <div class="cat-links">
+           <div class="nav-item-container">
+            <a class="nav-link" style="font-size:11px; padding:0;">NEW IN</a>
+              <div class="mega-menu">
+                    <div class="menu-col">
+                        <h3>SHOP BY CATEGORY</h3>
+                        <ul><li>UNSTITCHED COLLECTION</li><li>READY TO WEAR</li><li>KURTA COLLECTION</li></ul>
+                    </div>
+                    <div class="menu-images">
+                        <div class="featured-card"><img src="images/a1.webp"><p>EMBROIDERED RTW</p></div>
+                        <div class="featured-card"><img src="images/a2.webp"><p>LAWN UNSTITCHED</p></div>
+                        <div class="featured-card"><img src="images/a3.webp"><p>CO ORDS</p></div>
+                    </div>
+                </div>
+           </div>
+
+            <div class="nav-item-container">
+                <a class="nav-link" style="font-size:11px; padding:0;">READY TO WEAR</a>
+                <div class="mega-menu">
+                    <div class="menu-text-row">
+                        <div class="menu-col">
+                            <h3>SHOP BY CATEGORY</h3>
+                            <ul><li>3 PIECE</li><li>CO-ORD SET</li><li>SHIRT AND DUPATTA</li><li>KURTA</li><li>MODEST WEAR | ABAYA</li><li>BOTTOMWEAR</li></ul>
+                        </div>
+                        <div class="menu-col">
+                            <h3>SHOP BY COLLECTION</h3>
+                            <ul><li>SIGNATURE</li><li>LUXE</li><li>ESSENTIALS</li><li>MAMA AND ME</li></ul>
+                        </div>
+                    </div>
+                    <div class="menu-images">
+                        <div class="featured-card"><img src="images/a4.webp"><p>ESSENTIALS</p></div>
+                        <div class="featured-card"><img src="images/a5.webp"><p>SIGNATURE</p></div>
+                        <div class="featured-card"><img src="images/a6.webp"><p>SIGNATURE</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-item-container">
+                <a class="nav-link" style="font-size:11px; padding:0;">UNSTITCHED</a>
+                <div class="mega-menu">
+                    <div class="menu-text-row">
+                        <div class="menu-col">
+                            <h3>SHOP BY CATEGORY</h3>
+                            <ul><li>3 PIECE</li><li>2 PIECE</li><li>1 PIECE</li></ul>
+                        </div>
+                        <div class="menu-col">
+                            <h3>SHOP BY COLLECTION</h3>
+                            <ul><li>NOYA</li><li>ZARYA</li><li>LUXE</li></ul>
+                        </div>
+                    </div>
+                    <div class="menu-images">
+                        <div class="featured-card"><img src="images/a7.webp"><p>NOYA</p></div>
+                        <div class="featured-card"><img src="images/a8.webp"><p>ZARYA</p></div>
+                        <div class="featured-card"><img src="images/a9.webp"><p>LAWN 3 PIECE</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-item-container">
+                <a class="nav-link" style="font-size:11px; padding:0;">FORMALS</a>
+                <div class="mega-menu">
+                     <div class="menu-text-row">
+                        <div class="menu-col">
+                            <h3>SHOP BY CATEGORY</h3>
+                            <ul><li>RTW 2 PIECE</li><li>RTW 3 PIECE</li><li>UNSTITCHED</li></ul>
+                        </div>
+                        <div class="menu-col">
+                            <h3>SHOP BY COLLECTION</h3>
+                            <ul><li>FESTIVE'26</li></ul>
+                        </div>
+                    </div>
+                    <div class="menu-images">
+                        <div class="featured-card"><img src="images/a10.webp"><p>SIGNATURE</p></div>
+                        <div class="featured-card"><img src="images/a11.webp"><p>LUXE</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-item-container">
+                <a class="nav-link" style="font-size:11px; padding:0;">FOOTWEAR</a>
+                <div class="mega-menu">
+                    <div class="menu-col">
+                        <ul><li>KHUSSA</li><LI>KOLAHPURI</LI><li>CHAPPAL</li><li>CLOGS</li><li>PUMPS</li><LI>SANDAL</LI></ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-item-container">
+                <a class="nav-link" style="font-size:11px; padding:0;">ACCESSORIES</a>
+                <div class="mega-menu">
+                     <div class="menu-text-row">
+                        <div class="menu-col">
+                            <h3>SHOP BY CATEGORY</h3>
+                            <ul><li>STOLE SHAWLS</li><li>BAGS</li><li>JEWLLERY</li></ul>
+                        </div>
+                        <div class="menu-col">
+                            <h3>SHOP BY COLLECTION</h3>
+                            <ul><li>ARTISANAL JEWLLERY</li></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-item-container">
+                <a class="nav-link" style="font-size:11px; padding:0;">SYNCC</a>
+                <div class="mega-menu">
+                    <div class="menu-col">
+                        <h3>SHOP BY CATEGORY</h3>
+                        <ul><li>SHIRT</li><li>TSHIRT</li><li>TUNIC</li><li>COAT&JACKET</li><li>TROUSER</li><li>FOOTWEAR</li><li>ACCESSORIES</li></ul>
+                    </div>
+                    <div class="menu-images">
+                        <div class="featured-card"><img src="images/a12.webp"><p>DRESS</p></div>
+                         <div class="featured-card"><img src="images/a13.webp"><p>COAT AND JACKET</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="currency">PKR</div>
+    </div>
+</header>
+
+<div class="search-overlay" onclick="toggleSearch()"></div>
+<div class="search-drawer">
+    <div class="drawer-header"><h3>SEARCH OUR STORE</h3><button class="close-drawer" onclick="toggleSearch()">&times;</button></div>
+    <div class="search-input-group"><input type="text" placeholder="Search..."><span>📷 🔍</span></div>
+</div>
+
+<div class="cart-drawer" id="cartDrawer">
+    <div class="drawer-header"><h3>YOUR CART</h3><button class="close-drawer" onclick="toggleCart()">&times;</button></div>
+    <div style="text-align: center; margin-top: 50px;"><p>Your cart is empty</p></div>
+</div>
+
+<div id="home-content">
+    <div class="hero">
+        <h1>GRAND<br>FESTIVE SALE</h1>
+        <div class="sale-tag">UPTO 50% <span style="font-size: 40px;">OFF</span></div>
+        <div class="date">29th APRIL - 10th MAY</div>
+    </div>
+
+    <section class="category-grid-section" style="padding: 60px 45px 20px;">
+        <h2 style="text-align: left; font-size: medium; font-weight: 800; letter-spacing: 2px; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">SHOP BY CATEGORY UPTO 50% OFF</h2>
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="hover-container"><img src="images/c2.jpeg" alt=""></div>
+                <div class="product-info"><div class="product-name" style="text-align: center;">SUMMER'26</div></div>
+            </div>
+            <div class="product-card">
+                <div class="hover-container"><img src="images/z1.jpg" alt=""></div>
+                <div class="product-info"><div class="product-name" style="text-align: center;">CO-ORDS</div></div>
+            </div>
+            <div class="product-card">
+                <div class="hover-container"><img src="images/z2.webp" alt=""></div>
+                <div class="product-info"><div class="product-name" style="text-align: center;">READY TO WEAR</div></div>
+            </div>
+            <div class="product-card">
+                <div class="hover-container"><img src="images/z3.jpg" alt=""></div>
+                <div class="product-info"><div class="product-name" style="text-align: center;">UNSTITCHED</div></div>
+            </div>
+            <div class="product-card">
+                <div class="hover-container"><img src="images/z4.webp" alt=""></div>
+                <div class="product-info"><div class="product-name" style="text-align: center;">FORMALS</div></div>
+            </div>
+            <div class="product-card">
+                <div class="hover-container"><img src="images/z5.jpg" alt=""></div>
+                <div class="product-info"><div class="product-name" style="text-align: center;">ACCESSORIES</div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="category-banner" style="padding: 20px 45px 40px;">
+        <img src="images/s11.webp" alt="">
+    </section>
+
+    <section class="trending-section">
+        <div class="trending-header">
+            <h2>TRENDING</h2>
+            <div class="trending-tabs">
+                <a href="#" class="tab-link active">Ready To Wear</a>
+                <a href="#" class="tab-link">Unstitched</a>
+                <a href="#" class="tab-link">Bags</a>
+            </div>
+            <a href="#" class="see-all">SEE ALL</a>
+        </div>
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="badge">-20%</div>
+                <div class="hover-container"><img src="images/b1.webp" alt=""></div>
+                <div class="product-info">
+                    <div class="product-name">PINK LAWN EMBROIDERED STITCHED 3PC</div>
+                    <div class="price-row"><span class="new-price">PKR.6,792</span><span class="old-price">PKR.8,490</span></div>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="badge">-20%</div>
+                <div class="hover-container"><img src="images/Junaid Jamshed lawn printed dress design (1).jpeg" alt=""></div>
+                <div class="product-info">
+                    <div class="product-name">BLACK LAWN EMBROIDERED STITCHED 2PC</div>
+                    <div class="price-row"><span class="new-price">PKR.7,992</span><span class="old-price">PKR.9,990</span></div>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="badge">-20%</div>
+                <div class="hover-container"><img src="images/b2.jpeg" alt=""></div>
+                <div class="product-info">
+                    <div class="product-name">BLUE LAWN EMBROIDERED STITCHED 3PC</div>
+                    <div class="price-row"><span class="new-price">PKR.7,192</span><span class="old-price">PKR.8,990</span></div>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="badge">-30%</div>
+                <div class="hover-container"><img src="images/download (2).jpeg" alt=""></div>
+                <div class="product-info">
+                    <div class="product-name">BLUE DOBBY EMBROIDERED STITCHED 3PC</div>
+                    <div class="price-row"><span class="new-price">PKR.7,693</span><span class="old-price">PKR.10,990</span></div>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="badge">-20%</div>
+                <div class="hover-container"><img src="images/download (3).jpeg" alt=""></div>
+                <div class="product-info">
+                    <div class="product-name">GREEN LAWN EMBROIDERED STITCHED 3PC</div>
+                    <div class="price-row"><span class="new-price">PKR.6,792</span><span class="old-price">PKR.8,490</span></div>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="badge">-20%</div>
+                <div class="hover-container"><img src="images/c1.jpeg" alt=""></div>
+                <div class="product-info">
+                    <div class="product-name">GREY LAWN EMBROIDERED STITCHED 3PC</div>
+                    <div class="price-row"><span class="new-price">PKR.7,192</span><span class="old-price">PKR.8,990</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="dual-banner-section" style="display: flex; width: 100%; height: 600px; margin-top: 40px;">
+    
+    <div class="product-card" style="flex: 1; position: relative; overflow: hidden;">
+        <div class="hover-container" style="height: 100%;">
+            <img src="images/ss1.webp" alt="Co-ords" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div class="banner-content" style="position: absolute; top: 50%; left: 50px; transform: translateY(-50%); z-index: 10; color: white; pointer-events: none;">
+            <h2 style="font-size: 32px; font-weight: 800; margin-bottom: 5px;">CO-ORDS</h2>
+            <p style="font-size: 14px; font-weight: 600; margin-bottom: 20px;">UPTO 50% OFF</p>
+            <a href="#" style="font-size: 12px; font-weight: 800; text-decoration: underline; text-underline-offset: 5px; color: white; pointer-events: auto;">SHOP NOW</a>
+        </div>
+    </div>
+
+    <div class="product-card" style="flex: 1; position: relative; overflow: hidden; border-left: 4px solid #fff;">
+        <div class="hover-container" style="height: 100%;">
+            <img src="images/ss2.png" alt="Lawn 3 Piece" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div class="banner-content" style="position: absolute; top: 50%; left: 50px; transform: translateY(-50%); z-index: 10; color: white; pointer-events: none;">
+            <h2 style="font-size: 32px; font-weight: 800; margin-bottom: 5px;">LAWN 3 PIECE</h2>
+            <p style="font-size: 14px; font-weight: 600; margin-bottom: 20px;">UNSTITCHED UPTO 50% OFF</p>
+            <a href="#" style="font-size: 12px; font-weight: 800; text-decoration: underline; text-underline-offset: 5px; color: white; pointer-events: auto;">SHOP NOW</a>
+        </div>
+    </div>
+
+</section>
+<section class="triple-banner-section" style="display: flex; width: 100%; height: 500px; margin-top: 4px;">
+    
+    <div class="product-card" style="flex: 1; position: relative; overflow: hidden;">
+        <div class="hover-container" style="height: 100%;">
+            <img src="images/ca1.jpg" alt="Artisanal" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div class="banner-content" style="position: absolute; top: 50%; left: 40px; transform: translateY(-50%); z-index: 10; color: white; pointer-events: none;">
+            <h2 style="font-size: 28px; font-weight: 800; margin-bottom: 10px; text-transform: uppercase;">ARTISANAL</h2>
+            <a href="#" style="font-size: 11px; font-weight: 800; text-decoration: underline; text-underline-offset: 4px; color: white; pointer-events: auto; text-transform: uppercase;">SHOP NOW</a>
+        </div>
+    </div>
+
+    <div class="product-card" style="flex: 1; position: relative; overflow: hidden; border-left: 4px solid #fff;">
+        <div class="hover-container" style="height: 100%;">
+            <img src="images/cc2.webp" alt="Kurta" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div class="banner-content" style="position: absolute; top: 50%; left: 40px; transform: translateY(-50%); z-index: 10; color: white; pointer-events: none;">
+            <h2 style="font-size: 28px; font-weight: 800; margin-bottom: 10px; text-transform: uppercase;">KURTA</h2>
+            <a href="#" style="font-size: 11px; font-weight: 800; text-decoration: underline; text-underline-offset: 4px; color: white; pointer-events: auto; text-transform: uppercase;">SHOP NOW</a>
+        </div>
+    </div>
+
+    <div class="product-card" style="flex: 1; position: relative; overflow: hidden; border-left: 4px solid #fff;">
+        <div class="hover-container" style="height: 100%;">
+            <img src="images/bbs.webp" alt="Bags" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div class="banner-content" style="position: absolute; top: 50%; left: 40px; transform: translateY(-50%); z-index: 10; color: white; pointer-events: none;">
+            <h2 style="font-size: 28px; font-weight: 800; margin-bottom: 10px; text-transform: uppercase;">BAGS</h2>
+            <a href="#" style="font-size: 11px; font-weight: 800; text-decoration: underline; text-underline-offset: 4px; color: white; pointer-events: auto; text-transform: uppercase;">SHOP NOW</a>
+        </div>
+    </div>
+
+</section>
+<section class="store-locator-section" style="width: 100%; height: 450px; margin-top: 4px; position: relative; overflow: hidden; cursor: pointer;">
+    
+    <div class="product-card" style="width: 100%; height: 100%;">
+        <div class="hover-container" style="height: 100%;">
+            <img src="images/bbss.jpg" alt="Store Locator" style="width: 100%; height: 100%; object-fit: cover; filter: opacity(0.6);">
+        </div>
+    </div>
+
+    <div class="store-content" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; text-align: center; width: 100%; pointer-events: none;">
+        <h2 style="font-size: 60px; font-weight: 500; color: #000; letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase;">STORE LOCATOR</h2>
+        <p style="font-size: 16px; color: #333; font-weight: 500;">Your favourites, now just a visit away!</p>
+    </div>
+
+</section>
+</div>
+
+<div id="men-section">
+    <div class="nav-bottom" style="border-bottom: 1px solid #e0e0e0; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; padding: 10px 0;">
+    <div class="cat-links" style="display: flex; gap: 20px; text-transform: uppercase;">
+        <div class="nav-item-container">
+            <a class="nav-link" style="font-size:11px; padding:0;">NEW IN</a>
+              <div class="mega-menu">
+                    <div class="menu-col">
+                        <h3>SHOP BY CATEGORY</h3>
+                        <ul><li>KAMEEZ SHALWAR COLLECTION</li><li>KURTA TROUSER COLLECTION</li><li>KURTA COLLECTION</li><li>UNSTITCHED COLLECTION</li></ul>
+                    </div>
+                    <div class="menu-images">
+                        <div class="featured-card"><img src="images/V1.webp"><p>CO-ORD SET</p></div>
+                        <div class="featured-card"><img src="images/V2.webp"><p>SUMMER COOL</p></div>
+                        
+                    </div>
+                </div>
+           </div>
+
+         <div class="nav-item-container">
+                <a class="nav-link" style="font-size:11px; padding:0;">READY TO WEAR</a>
+                <div class="mega-menu">
+                    <div class="menu-text-row">
+                        <div class="menu-col">
+                            <h3>SHOP BY CATEGORY</h3>
+                            <ul><li>KAMEEZ SHALWAR</li><li>KURTA</li><li>KAMEEZ SHALWAR & Waistcoat/li><li>KURTA TROUSERS</li><li>WAISTCOAT</li><li>JUBBA THOBE</li><li>BOTTOMWEAR</li><li>SWEATERS</li></ul>
+                        </div>
+                        <div class="menu-col">
+                            <h3>SHOP BY COLLECTION</h3>
+                            <ul><li>AUTOGRAPH SERIES</li><li>HERITAGE EDIT</li><li>STREETWEAR COLLECTION</li><li>EXPRESSION SERIES ALL AGES OF HIM</li><li>LIKE FATHER LIKE SON</li></ul>
+                        </div>
+                    </div>
+                    <div class="menu-images">
+                        <div class="featured-card"><img src="images/V3.webp"><p>EMBROIDERED KURTA</p></div>
+                        <div class="featured-card"><img src="images/V4.webp"><p>LATHA UNSTITCHED</p></div>
+                        <div class="featured-card"><img src="images/V5.webp"><p>COTTON KAMEEZ SHALWAR</p></div>
+                    </div>
+                </div>
+            </div>
+         <div class="nav-item-container">
+                <a class="nav-link" style="font-size:11px; padding:0;">UNSTITCHED</a>
+                <div class="mega-menu">
+                    <div class="menu-text-row">
+                        <div class="menu-col">
+                            <h3>SHOP BY CATEGORY</h3>
+                            <ul><li>PLATINUM CLASS</li><li>GOLD CLASS</li><li>SILVERCLASS<li>LATHA</li><li>BOSKI</li><li>EXPRESSION</li></ul>
+                        </div>
+                        
+                    </div>
+                    <div class="menu-images">
+                        <div class="featured-card"><img src="images/ZZ1.webp"><p>PREMIUM BOSKI</p></div>
+                        <div class="featured-card"><img src="images/ZZ2.webp"><p>SUMMER COOL/EASY IRON</p></div>
+                        <div class="featured-card"><img src="images/ZZ3.webp"><p>COTTON LATHA</p></div>
+                    </div>
+                </div>
+            </div>
+          <div class="nav-item-container">
+                <a class="nav-link" style="font-size:11px; padding:0;">GROOMS COLLECTION</a>
+                <div class="mega-menu">
+                    <div class="menu-text-row">
+                        <div class="menu-col">
+                            <h3>SHOP BY CATEGORY</h3>
+                            <ul><li>PRINCE COAT</li><li>SHERWANI</li><li>SPECIAL KURTA<li>TURBAN</li><li>KHUSSA</li></ul>
+                        </div>
+                        <div class="menu-col">
+                            <h3>SHOP BY COLLECTION</h3>
+                            <ul><li>CEREMONIAL</li></ul>
+                        </div>
+                    </div>
+                    <div class="menu-images">
+                        <div class="featured-card"><img src="images/WW1.webp"><p>SPECIAL KURTA</p></div>
+                        <div class="featured-card"><img src="images/WW2.webp"><p>SHERWANI COLLECTION</p></div>
+                        <div class="featured-card"><img src="images/WW3.webp"><p>PRINCE COAT</p></div>
+                    </div>
+                </div>
+            </div>
+         <div class="nav-item-container">
+                <a class="nav-link" style="font-size:11px; padding:0;">FOOT WEAR</a>
+                <div class="mega-menu">
+                    <div class="menu-text-row">
+                        <div class="menu-col">
+                           
+                            <ul><li>SHOES</li><li>SANDALS</li></ul>
+                        </div>
+                       
+                    </div>
+                  
+                </div>
+            </div>
+         <div class="nav-item-container">
+                <a class="nav-link" style="font-size:11px; padding:0;">ACCESSORIES</a>
+                <div class="mega-menu">
+                    <div class="menu-text-row">
+                        <div class="menu-col">
+                           <h3>SHOP BY CATEGORY</h3>
+                            <ul><li>CAPS</li><li>SHAWLS</li><li>UNDERWEAR</li></ul>
+                        </div>
+                       
+                    </div>
+                  
+                </div>
+            </div>
+         <div class="nav-item-container">
+                <a class="nav-link" style="font-size:11px; padding:0;">CAST AND CREW</a>
+                <div class="mega-menu">
+                    <div class="menu-text-row">
+                        <div class="menu-col">
+                            <h3>CLOTHING</h3>
+                            <ul><li>KAMEEZ SHALWAR</li><li>KURTA TROUSER</li><li>WAISTCOAT<li>KURTA TROUSERS</li><li>JACKET AND SWEATERS</li><li>UNSTITCHED</li><li>BOTTOMWEAR</li><li>FLEXI PANTS</li></ul>
+                        </div>
+                        <div class="menu-col">
+                            <h3>ACCESSORIES</h3>
+                            <ul><li>PERFUMES</li><li>SHAWL</li><li>FOOTWEAR</li></ul>
+                        </div>
+                    </div>
+                    <div class="menu-images">
+                        <div class="featured-card"><img src="images/G1.webp"><p>SHALWAR KAMEEZ</p></div>
+                        <div class="featured-card"><img src="images/G2.webp"><p>KURTA TROUSER</p></div>
+                        <div class="featured-card"><img src="images/G3.webp"><p>WAISTCOAT</p></div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </div>
+
+    <h2 class="men-category-title">Shop By Category</h2>
+    <div class="product-grid">
+        <div class="product-card">
+            <div class="hover-container"><img src="images/JJMS-3867.webp" alt="Kameez Shalwar"></div>
+            <p style="margin-top: 15px; font-size: 11px; font-weight: 600; text-transform: uppercase; text-align: center;">Kameez Shalwar</p>
+        </div>
+        <div class="product-card">
+            <div class="hover-container"><img src="images/39610_6_b8915581-474b-4a5c-ab4b-d2413be3cfc0.jpg" alt="Unstitched"></div>
+            <p style="margin-top: 15px; font-size: 11px; font-weight: 600; text-transform: uppercase; text-align: center;">Unstitched</p>
+        </div>
+        <div class="product-card">
+            <div class="hover-container"><img src="images/ssww.webp" alt="Kurta Trouser"></div>
+            <p style="margin-top: 15px; font-size: 11px; font-weight: 600; text-transform: uppercase; text-align: center;">Kurta Trouser</p>
+        </div>
+        <div class="product-card">
+            <div class="hover-container"><img src="images/48252jjvc_1_85bb00d1-1f62-4d5f-b7ef-8b63f7d7e002.webp" alt="Waistcoat"></div>
+            <p style="margin-top: 15px; font-size: 11px; font-weight: 600; text-transform: uppercase; text-align: center;">Waistcoat</p>
+        </div>
+        <div class="product-card">
+            <div class="hover-container"><img src="images/50495_3.webp" alt="Formal Kurta"></div>
+            <p style="margin-top: 15px; font-size: 11px; font-weight: 600; text-transform: uppercase; text-align: center;">Formal Kurta</p>
+        </div>
+        <div class="product-card">
+            <div class="hover-container"><img src="images/m-sr-0400044-black.webp" alt="Footwear"></div>
+            <p style="margin-top: 15px; font-size: 11px; font-weight: 600; text-transform: uppercase; text-align: center;">Footwear</p>
+        </div>
+        
+    </div>
+
+    
+    <div 
+  style="position: relative; width: 100%;  overflow: hidden; cursor: pointer;"
+  onmouseover="this.querySelector('img').style.transform='scale(1.1)';"
+  onmouseout="this.querySelector('img').style.transform='scale(1)';"
+>
+  <img 
+    src="images/e1.png" 
+    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;"
+  >
+
+  <button 
+    style="
+      position: absolute; 
+      bottom: 20px; 
+      left: 20px; 
+      z-index: 10;
+      padding: 15px 45px; 
+      background-color: black; 
+      color: white; 
+      border: none; 
+      font-family: Arial, sans-serif; 
+      font-size: 18px; 
+      font-weight: bold; 
+      text-transform: uppercase; 
+      letter-spacing: 2px;
+      cursor: pointer;
+    "
+  >
+    Shop Now
+  </button>
+  
+</div>
+<h2 class="men-category-title">TRENDING</h2>
+<div class="product-grid">
+        <div class="product-card">
+            <div class="hover-container"><img src="images/e2.jpeg" alt="Kameez Shalwar"></div>
+            <p style="margin-top: 15px; font-size: 11px; font-weight: 600; text-transform: uppercase; text-align: center;">Kameez Shalwar</p>
+        </div>
+        <div class="product-card">
+            <div class="hover-container"><img src="images/e3.jpeg" alt="Unstitched"></div>
+            <p style="margin-top: 15px; font-size: 11px; font-weight: 600; text-transform: uppercase; text-align: center;">Unstitched</p>
+        </div>
+        <div class="product-card">
+            <div class="hover-container"><img src="images/e4.jpeg"></div>
+            <p style="margin-top: 15px; font-size: 11px; font-weight: 600; text-transform: uppercase; text-align: center;">Kurta Trouser</p>
+        </div>
+        <div class="product-card">
+            <div class="hover-container"><img src="images/e5.jpeg" alt="Waistcoat"></div>
+            <p style="margin-top: 15px; font-size: 11px; font-weight: 600; text-transform: uppercase; text-align: center;">Waistcoat</p>
+        </div>
+        <div class="product-card">
+            <div class="hover-container"><img src="images/50495_3.webp" alt="Formal Kurta"></div>
+            <p style="margin-top: 15px; font-size: 11px; font-weight: 600; text-transform: uppercase; text-align: center;">Formal Kurta</p>
+        </div>
+        <div class="product-card">
+            <div class="hover-container"><img src="images/m-sr-0400044-black.webp" alt="Footwear"></div>
+            <p style="margin-top: 15px; font-size: 11px; font-weight: 600; text-transform: uppercase; text-align: center;">Footwear</p>
+        </div>
+        
+    </div>
+    
+
+<div class="featured-container" style="display: flex; gap: 5px; width: 100%;">
+    <div style="flex: 1; position: relative; height: 700px; overflow: hidden;">
+        <img src="images/n1.jpeg" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+        
+        <div style="position: absolute; bottom: 50px; left: 50px; color: white;">
+            <h2 style="font-size: 28px; font-weight: 700; text-transform: uppercase; margin: 0; letter-spacing: 1px;">AUTOGRAPH SERIES</h2>
+            <p style="font-size: 14px; margin: 5px 0 15px; text-transform: uppercase;">Featured Collection</p>
+            <a href="#" style="color: white; font-size: 12px; font-weight: 700; text-decoration: underline; text-underline-offset: 5px; text-transform: uppercase;">SHOP NOW</a>
+        </div>
+    </div>
+
+    <div style="flex: 1; position: relative; height: 700px; overflow: hidden;">
+        <img src="images/n2.webp" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+        
+        <div style="position: absolute; bottom: 50px; left: 50px; color: white;">
+            <h2 style="font-size: 28px; font-weight: 700; text-transform: uppercase; margin: 0; letter-spacing: 1px;">CEREMONIAL</h2>
+            <p style="font-size: 14px; margin: 5px 0 15px; text-transform: uppercase;">Featured Collection</p>
+            <a href="#" style="color: white; font-size: 12px; font-weight: 700; text-decoration: underline; text-underline-offset: 5px; text-transform: uppercase;">SHOP NOW</a>
+        </div>
+    </div>
+</div>
+<div class="triple-banner" style="display: flex; gap: 2px; width: 100%; height: 650px;">
+    
+    <div style="flex: 1; position: relative;">
+        <img src="images/f1.webp" style="width: 100%; height: 100%; object-fit: cover;" alt="Heritage Edit">
+        <div style="position: absolute; top: 50%; left: 40px; transform: translateY(-50%); color: white;">
+            <h2 style="font-size: 24px; font-weight: 700; text-transform: uppercase;">Heritage Edit '25</h2>
+            <a href="#" style="color: white; font-weight: 700; text-decoration: underline; display: block; margin-top: 10px;">SHOP NOW</a>
+        </div>
+    </div>
+
+    <div style="flex: 1; position: relative;">
+        <img src="images/f2.webp" style="width: 100%; height: 100%; object-fit: cover;" alt="Expression Series">
+        <div style="position: absolute; top: 50%; left: 40px; transform: translateY(-50%); color: white;">
+            <h2 style="font-size: 24px; font-weight: 700; text-transform: uppercase;">Expression Series</h2>
+            <a href="#" style="color: white; font-weight: 700; text-decoration: underline; display: block; margin-top: 10px;">SHOP NOW</a>
+        </div>
+    </div>
+
+    <div style="flex: 1; position: relative;">
+        <img src="images/f3.webp" style="width: 100%; height: 100%; object-fit: cover;" alt="Like Father Like Son">
+        <div style="position: absolute; top: 50%; left: 40px; transform: translateY(-50%); color: white;">
+            <h2 style="font-size: 24px; font-weight: 700; text-transform: uppercase;">Like Father Like Son</h2>
+            <a href="#" style="color: white; font-weight: 700; text-decoration: underline; display: block; margin-top: 10px;">SHOP NOW</a>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<div id="wishlist-section">
+    <div style="max-width: 400px; margin: 0 auto;">
+        <h2 style="font-size: 24px; margin-bottom: 20px;">MY WISHLIST</h2>
+        <p style="font-size: 14px; color: #666; margin-bottom: 30px;">Your wishlist is currently empty.</p>
+        <a href="javascript:void(0)" onclick="hideWishlist()" class="btn-black">Continue Shopping</a>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-container">
+        <div class="footer-col">
+            <h3>CONTACT</h3>
+            <p>📞 +92 2137 170 445</p>
+            <p>✉️ eshop@junaidjamshed.com</p>
+        </div>
+        <div class="footer-col"><h3>COMPANY</h3><ul><li>ABOUT US</li><li>CAREERS</li><li>STORE LOCATOR</li></ul></div>
+        <div class="newsletter-col"><h3>NEWSLETTER</h3><div class="newsletter-input"><input type="text" placeholder="EMAIL ADDRESS"><button>→</button></div></div>
+    </div>
+    <div class="footer-bottom">
+        <div class="footer-bottom-text" style="position: absolute; left: 50%; transform: translateX(-50%);">© 2026 J. All Rights Reserved</div>
+    </div>
+</footer>
+
+<script>
+    function toggleSearch() {
+        document.body.classList.toggle('search-active');
+        document.body.style.overflow = document.body.classList.contains('search-active') ? 'hidden' : 'auto';
+    }
+    function toggleCart() {
+        document.getElementById('bodyTag').classList.toggle('cart-active');
+    }
+    function showWishlist() {
+        document.getElementById('home-content').style.display = 'none';
+        document.getElementById('men-section').style.display = 'none';
+        document.getElementById('wishlist-section').style.display = 'block';
+    }
+    function hideWishlist() {
+        document.getElementById('home-content').style.display = 'block';
+        document.getElementById('wishlist-section').style.display = 'none';
+    }
+
+ 
+ function showMen() {
+    
+    document.getElementById('home-content').style.display = 'none';
+   
+    document.getElementById('men-section').style.display = 'block';
+    
+ 
+    document.querySelector('header .nav-bottom').style.display = 'none';
+}
+
+function showWomen() {
+    
+    document.getElementById('home-content').style.display = 'block';
+  
+    document.getElementById('men-section').style.display = 'none';
+    
+    // 3. Show the Women's Navigation Bar in the Header again
+    document.querySelector('header .nav-bottom').style.display = 'flex';
+}
+
+</script>
+<script>
+document.querySelectorAll('.product-card').forEach(card => {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', () => {
+        const nameEl = card.querySelector('.product-name') || card.querySelector('p');
+        const name = nameEl.innerText;
+        const priceEl = card.querySelector('.new-price');
+        const price = priceEl ? priceEl.innerText.replace('PKR.', '') : "0";
+        const oldPriceEl = card.querySelector('.old-price');
+        const oldPrice = oldPriceEl ? oldPriceEl.innerText.replace('PKR.', '') : "0";
+        const img = card.querySelector('img').src;
+        
+        window.location.href = `product-detail.html?name=${encodeURIComponent(name)}&price=${price}&old=${oldPrice}&img=${encodeURIComponent(img)}`;
+    });
+});
+
+function updateBagCounter() {
+    let cart = JSON.parse(localStorage.getItem('j_cart')) || [];
+    let counterElement = document.getElementById('cart-count');
+    if (counterElement) {
+        counterElement.innerText = cart.length;
+    }
+}
+
+window.addEventListener('load', updateBagCounter);
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+    // 1. Yeh upar wala rehne dein (jo sahi initialize kar raha hai)
+    const SUPABASE_URL = 'https://ncjmfseeotemvmjorlav.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // 2. Niche jo testing code hai, us mein se "const supabase = ..." wali line ko hatae'in
+    async function testDatabase() {
+        console.log("Trying to connect with supabase...");
+        
+        // Yahan direct 'supabase' use hoga, dobara declare nahi karna
+        const { data, error } = await supabase.from('products').select('*').limit(1);
+        
+        if (error) {
+            if (error.message.includes("does not exist")) {
+                console.log("✅ SUCCESS: Supabase successfully connected!");
+            } else {
+                console.log("❌ ERROR:", error.message);
+            }
+        } else {
+            console.log("✅ SUCCESS:", data);
+        }
+    }
+
+    testDatabase();
+</script>
+</body>
+</html>
